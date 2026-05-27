@@ -5,6 +5,8 @@ import {
   doc,
   getDoc
 } from "firebase/firestore";
+
+
 const HomePage = () => {
     const user = auth.currentUser;
     const navigate = useNavigate();

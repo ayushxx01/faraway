@@ -3,10 +3,8 @@ import {useState} from 'react'
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 import { useNavigate } from 'react-router-dom';
-
-
-const RegisterPage = () => {
-    const[email, setEmail] = useState("");
+const RegisterComp = () => {
+  const[email, setEmail] = useState("");
     const[password, setPassword] = useState("");
     const navigate = useNavigate();
     const handleSignUp = async() =>{
@@ -29,4 +27,4 @@ const RegisterPage = () => {
   )
 }
 
-export default RegisterPage
+export default RegisterComp
