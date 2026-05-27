@@ -6,15 +6,20 @@ import {
 } from "firebase/firestore";
 
 import { auth, db } from "../firebase/firebase";
+import { useNavigate } from 'react-router-dom';
 
 const ProfileSetPage = () => {
+    const navigate = useNavigate();
 
-    const generatePartnerCode = (username) => {
+     const generatePartnerCode = (username) => {
+        
+
         const partnerCode = `&&${username.toLowerCase()}${Math.floor(1000 + Math.random() * 9000)}`;
+
         return partnerCode;
     }
 
-    const [formData, setFormData] = useState({
+    const[formData, setFormData] = useState({
         username: "",
         age: "",
         gender: "",
@@ -24,18 +29,22 @@ const ProfileSetPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
+        try{
             const user = auth.currentUser;
             const partnerCode = generatePartnerCode(formData.username);
-
             await setDoc(doc(db, 'users', user.uid), {
+                email: user.email,
                 username: formData.username,
-                age: formData.age,
+                age: Number(formData.age),
                 gender: formData.gender,
-                isConnected: formData.isConnected,
+                isConnected: false,
+                connectedTo: null,
                 partnerCode,
                 createdAt: serverTimestamp()
+            
             });
+
+            navigate('/home');
         } catch (error) {
             console.error("Error adding document: ", error);
         }
