@@ -5,36 +5,62 @@ import {
   doc,
   getDoc
 } from "firebase/firestore";
+import IsntConnComp from '../components/IsntConnComp';
+import IsConnComp from '../components/IsConnComp';
+import {
+  onAuthStateChanged
+} from "firebase/auth";
 
 
 const HomePage = () => {
-    const user = auth.currentUser;
+
     const navigate = useNavigate();
     const[formData, setFormData] = useState(null);
     
-    useEffect(() => {const fetchUserData = async () => {
-        
-            if(!user) {
+    useEffect(() => {
 
-            }
+  const unsubscribe =
+    onAuthStateChanged(
+      auth,
+      async (user) => {
 
-            const docRef = doc(db,"users",user.uid);
+        if (!user) {
+          navigate("/auth");
+          return;
+        }
 
-            const docSnap = await getDoc(docRef);
+        try {
 
-            console.log(docSnap);
+          const docRef =
+            doc(db, "users", user.uid);
 
-            if(docSnap.exists()){
-                setFormData(docSnap.data());
-                
-            }
-            else{
-                console.log("No data")
-            }
+          const docSnap =
+            await getDoc(docRef);
 
-        
-    }
-fetchUserData()},[]);
+          if (docSnap.exists()) {
+
+            setFormData(docSnap.data());
+
+          } else {
+
+            console.log(
+              "No such document"
+            );
+
+          }
+
+        } catch (error) {
+
+          console.log(error);
+
+        }
+      }
+    );
+
+  return () => unsubscribe();
+
+}, []);
+
  if (!formData) {
     return <h1>Loading...</h1>;
   }
@@ -42,32 +68,9 @@ fetchUserData()},[]);
         <>
         {
             formData.isConnected ? (
-                 <h1>
-              Show Journal Screen
-            </h1>
+                 <IsConnComp formData={formData} />
             ) : (
-                <>
-              <h1>
-                Connect With Partner
-              </h1>
-
-              <p>
-                Your Code:
-                {formData.partnerCode}
-              </p>
-
-              <button>
-                Copy Code
-              </button>
-
-              <input
-                placeholder="Enter Partner Code"
-              />
-
-              <button>
-                Connect
-              </button>
-            </>
+              <IsntConnComp formData={formData}/>
             ) 
         }
         </>

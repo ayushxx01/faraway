@@ -2,6 +2,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from "../firebase/firebase";
 import {useState} from 'react'
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 
 const LoginComp = () => {
@@ -10,7 +11,7 @@ const LoginComp = () => {
     const navigate = useNavigate();
     const handleLogIn = async() =>{
         try {
-            const userCredential = await signInWithEmailAndPasswordWithEmailAndPassword(auth, email, password);
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
             console.log(userCredential.user);
             navigate('/profile-setup');
