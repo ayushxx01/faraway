@@ -50,16 +50,19 @@ const IsntConnComp = ({formData}) => {
 
         const userRef = doc(db,'users',user.uid)
         const partnerRef = doc(db,'users',partnerDoc.id);
+        const pair = [user.uid,partnerDoc.id].sort().join("_");
         await updateDoc(
             userRef,{
                 isConnected: true,
-                connectedTo: partnerDoc.id
+                connectedTo: partnerDoc.id,
+                pairId: pair
             }
         );
 
         await updateDoc(partnerRef, {
             isConnected: true,
-            connectedTo: user.uid
+            connectedTo: user.uid,
+            pairId: pair
         });
     }
   return (

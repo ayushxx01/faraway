@@ -40,7 +40,8 @@ const ProfileSetPage = () => {
                 isConnected: false,
                 connectedTo: null,
                 partnerCode,
-                createdAt: serverTimestamp()
+                createdAt: serverTimestamp(),
+                pairId: null
             
             });
 
