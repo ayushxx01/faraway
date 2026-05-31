@@ -6,6 +6,7 @@ import {
   setDoc,
   serverTimestamp,
 } from "firebase/firestore";
+import JournalComp from './JournalComp';
 const IsConnComp = ({formData}) => {
   const[loading, setLoading] = useState(true);
   const [journal, setJournal] = useState(null); //because its an obj
@@ -38,21 +39,23 @@ const IsConnComp = ({formData}) => {
         setLoading(false)
         setJournal(docSnap.data())
       }
-
+   
     } 
   fetch (); },[])
-  return (
+  if(journal === null){
+    return (
+      <>
+      <h1>loading</h1>
+      </>
+    )
+  }
+  else {
+    return (
     <>
-      <div className="flex flex-row gap-6">
-        <div className="flex-1">
-          <h2>{formData.username}</h2>
-        </div>
-        <div className="flex-1">
-          <h2>{formData.username}</h2>
-        </div>
-      </div>
+      <JournalComp journal = {journal} currentUserUid={user.uid} pair={pair}/>
       </>
   )
+  }
 }
 
 export default IsConnComp
