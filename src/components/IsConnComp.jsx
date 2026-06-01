@@ -52,7 +52,7 @@ const IsConnComp = ({formData}) => {
   else {
     return (
     <>
-      <JournalComp journal = {journal} currentUserUid={user.uid} pair={pair}/>
+      <JournalComp journal = {journal} currentUserUid={user.uid} pair={pair} formData={formData}/>
       </>
   )
   }
