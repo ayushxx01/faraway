@@ -11,16 +11,16 @@ import { useNavigate } from 'react-router-dom';
 const ProfileSetPage = () => {
     const navigate = useNavigate();
 
-     const generatePartnerCode = (username) => {
+     const generatePartnerCode = (name) => {
         
 
-        const partnerCode = `&&${username.toLowerCase()}${Math.floor(1000 + Math.random() * 9000)}`;
+        const partnerCode = `&&${name.toLowerCase()}${Math.floor(1000 + Math.random() * 9000)}`;
 
         return partnerCode;
     }
 
     const[formData, setFormData] = useState({
-        username: "",
+        name: "",
         age: "",
         gender: "",
         isConnected: false,
@@ -31,10 +31,10 @@ const ProfileSetPage = () => {
 
         try{
             const user = auth.currentUser;
-            const partnerCode = generatePartnerCode(formData.username);
+            const partnerCode = generatePartnerCode(formData.name);
             await setDoc(doc(db, 'users', user.uid), {
                 email: user.email,
-                username: formData.username,
+                name: formData.name,
                 age: Number(formData.age),
                 gender: formData.gender,
                 isConnected: false,
@@ -56,7 +56,7 @@ const ProfileSetPage = () => {
   return (
     <>
     <form onSubmit={handleSubmit}>
-        <input type = "text" placeholder='username' onChange={(e) => setFormData({...formData, username: e.target.value})} />
+        <input type = "text" placeholder='name' onChange={(e) => setFormData({...formData, name: e.target.value})} />
         <input type = "number" placeholder='age' onChange={(e) => setFormData({...formData, age: e.target.value})} />
         <input type = "text" placeholder='gender' onChange={(e) => setFormData({...formData, gender: e.target.value})} />
         <button type="submit">Submit</button>

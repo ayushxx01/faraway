@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
-import { doc, updateDoc } from "firebase/firestore"
+import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { db } from "../firebase/firebase"
 
-const JournalComp = ({ journal, currentUserUid, pair, formData }) => {
+const JournalComp = ({ journal, currentUserUid, pair, formData ,partner}) => {
+
   const today = new Date().toISOString().split("T")[0]
   const isUser1 = currentUserUid === journal.user1Id
 
   const [myEntry, setMyEntry] = useState(
     isUser1 ? journal.user1entry : journal.user2entry
   )
-
+  const partnerUid = formData.connectedTo;
   const partnerEntry = isUser1 ? journal.user2entry : journal.user1entry
 
   const handleSave = async () => {
@@ -64,7 +65,7 @@ const JournalComp = ({ journal, currentUserUid, pair, formData }) => {
                 color: isUser1 ? '#e8956d' : '#7e9fe8',
                 lineHeight: 1.1,
               }}>
-                {isUser1 ? formData?.username : formData?.partnerUsername}
+                {isUser1 ? formData?.name : formData?.partnername}
               </div>
             </div>
             <div style={{ fontSize: '22px', opacity: 0.7 }}>
@@ -145,7 +146,7 @@ const JournalComp = ({ journal, currentUserUid, pair, formData }) => {
                 color: isUser1 ? '#7e9fe8' : '#e8956d',
                 lineHeight: 1.1,
               }}>
-                {isUser1 ? formData?.partnerUsername : formData?.username}
+                {partner}
               </div>
             </div>
             <div style={{ fontSize: '22px', opacity: 0.7 }}>

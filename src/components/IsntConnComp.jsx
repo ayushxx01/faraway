@@ -14,7 +14,7 @@ const IsntConnComp = ({formData}) => {
     const[copied, setCopied] = useState(false);
     const[partnerCode, setPartnerCode] = useState('');
     const user = auth.currentUser;
-   
+   const navigate = useNavigate();
    
 
     const copy = () => {
@@ -64,6 +64,7 @@ const IsntConnComp = ({formData}) => {
             connectedTo: user.uid,
             pairId: pair
         });
+        navigate('/home');
     }
   return (
     

@@ -13,6 +13,7 @@ const IsConnComp = ({formData}) => {
   const user = auth.currentUser; //cause formadata doesnt contain user uid
   const pair = formData.pairId;
   const today = new Date().toISOString().split("T")[0];
+  const [partner,setPartner] = useState(null);
   useEffect(()=> {
     const fetch = async () => {
       console.log(formData);
@@ -20,7 +21,11 @@ const IsConnComp = ({formData}) => {
       console.log(today)
       const docRef = doc(db,'relations', pair ,'journals' ,today);
       const docSnap = await getDoc(docRef);
-      
+        const parRef = doc(db,'users',formData.connectedTo);
+        const parDoc = await getDoc(parRef);
+        const name = parDoc.data().username;
+        console.log("data:", parDoc.data());
+       setPartner(name);
       if(!docSnap.exists()){
         const jourData = {
           date: today,
@@ -38,6 +43,7 @@ const IsConnComp = ({formData}) => {
       else {
         setLoading(false)
         setJournal(docSnap.data())
+
       }
    
     } 
@@ -50,9 +56,12 @@ const IsConnComp = ({formData}) => {
     )
   }
   else {
+console.log(partner)
     return (
+      
     <>
-      <JournalComp journal = {journal} currentUserUid={user.uid} pair={pair} formData={formData}/>
+      <JournalComp journal = {journal} currentUserUid={user.uid} pair={pair} formData={formData} partner={partner}/>
+       
       </>
   )
   }
